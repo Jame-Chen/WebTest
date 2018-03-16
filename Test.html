@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" style="padding:20px;">
+            <div class="col-md-12">
+                <input type="button" id="test" class="btn btn-info" value="确定" />
+            </div>
+        </div>
+    </div>
+    <script src="Scripts/jquery-3.2.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script>
+        $("#test").click(function () {
+
+
+        })
+
+        function getstudent() {
+            $.ajax({
+                type: "get",
+                url: "https://172.18.1.75:8243/student/v1/Students",
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer 183d014c-61c1-3657-9ab3-d7aff9431966",
+                    "Accept": "application/json"
+                },
+                success: function (data) {
+                    //  var ret = data.StudentCollection.Student[0];
+                    var arr = [];
+                    var list = {
+                        "_poststudent_batch_req": {
+                            "_poststudent": arr
+                        }
+                    }
+                    $.each(data.StudentCollection.Student, function (i, item) {
+                        var temp = {
+                            "Name": "" + item.Name + "",
+                            "Age": parseInt(item.Age),
+                            "Sex": parseInt(item.Sex),
+                            "Chinese": parseFloat(item.Chinese),
+                            "Math": parseFloat(item.Math),
+                            "English": parseFloat(item.English)
+                        }
+                        arr.push(temp);
+                    })
+                    addstudent(list);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 200) {
+
+                        alert(ajaxOptions);
+                    }
+                    else {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                }
+            })
+        }
+
+        function addstudent(temp) {
+            temp = JSON.stringify(temp);//json字符串
+            alert(temp);
+            $.ajax({
+                type: "POST",
+                url: "https://172.18.1.75:8243/203student/v1/Student_batch_req",
+                dataType: "json",
+                data: temp,
+                headers: {
+                    "Content-Type": "application/json",//必须的
+                    "Authorization": "Bearer 183d014c-61c1-3657-9ab3-d7aff9431966",
+                    "Accept": "application/json"
+                },
+                success: function (data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 200) {
+                        alert(ajaxOptions);
+                    }
+                    else {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                }
+            })
+        }
+
+        function test() {
+            $.ajax({
+                type: "get",
+                url: "http://link.y11t.appnxt.com/v1/trigger/odoo",
+                dataType: "jsonp",
+                headers: {
+                    "Accept": "application/json"
+                },
+                data: {
+                    'link': 'c8b51d10ff3e11e7bf9e02420b6a1625',
+                    'action': 'article_list',
+                    'type': '公司新闻'
+                },
+                jsonp: "successCallback",
+                jsonpCallback: 'successCallback',
+                username: "",
+                password: "",
+                success: function (data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 200) {
+
+                        alert(ajaxOptions);
+                    }
+                    else {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                }
+            })
+        }
+
+        function successCallback(data) {
+            alert(JSON.stringify(data));
+        }
+
+        function domainTest() {
+            //document.domain;
+            var domain = "http://172.18.1.152:8091/YJDD/Index?mark=VXNlck5hbWU9QWRtaW58RGVwYXJ0bWVudD3luILmjpLmsLTlpIR8VXNlcklEPTEzMTEwNjE1MTYzNTYzODk2MjE1NjlkZjNlMjRlfERlcGFydG1lbnRUeXBlPeW4gueuoeWNleS9jXxUcnVlTmFtZT3ns7vnu5/nrqHnkIblkZg";
+            var paramIndex = domain.indexOf("?");
+            domain = domain.substring(7, paramIndex);
+            var index = domain.indexOf("/");
+            var index2 = domain.lastIndexOf("/");
+            if (index2 - index > 5) {
+                domain = domain.substring(index, index + 5);
+            } else {
+                domain = "";
+            }
+        }
+    </script>
+</body>
+
+</html>

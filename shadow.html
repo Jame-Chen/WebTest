@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        .trans {
+            border: 1px solid green;
+            width: 100px;
+            height: 100px;
+            -webkit-transition: all ease 1s;
+            -moz-transition: all ease 1s;
+            -o-transition: all ease 1s;
+            transition: all ease 1s;
+        }
+
+            .trans:hover {
+                box-shadow: 0 0 10px #498deb;
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center" style="padding:100px 0;">
+                <input type="text" class="trans" value="box-shadow" />
+            </div>
+        </div>
+    </div>
+    <script src="Scripts/jquery-3.2.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script>
+
+        $(function () {
+
+        })
+    </script>
+</body>
+</html>
