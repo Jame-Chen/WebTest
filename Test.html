@@ -1,14 +1,13 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+  
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
+    <div id="cpuchart" style="width:200px;height:100px;"></div>
     <div class="container-fluid">
         <div class="row" style="padding:20px;">
             <div class="col-md-12">
@@ -18,10 +17,54 @@
     </div>
     <script src="Scripts/jquery-3.2.1.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-    <script>
+    <script src="echarts/echarts.common.min.js"></script>
+
+    <script>   var option = null;
+        option = {
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                type: 'line',
+                areaStyle: {}
+            }]
+        };
+        $(function () {
+            var dom = document.getElementById("cpuchart");
+            var myChart = echarts.init(dom);
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+        })
         $("#test").click(function () {
 
-
+            $.ajax({
+                type: "GET",
+                url: "https://172.18.1.215:8243/FXYJ/v1/PUMPTRUCK",
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer 3d6d59e0-0208-33b8-a63a-e4c23b633e8c",
+                    "Accept": "application/json"
+                },
+                success: function (data) {
+                    alert(JSON.stringify(data));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 200) {
+                        alert(ajaxOptions);
+                    }
+                    else {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                }
+            })
         })
 
         function getstudent() {
