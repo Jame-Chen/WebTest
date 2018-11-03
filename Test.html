@@ -1,14 +1,16 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  
+    <title></title>
     <meta charset="utf-8">
- 
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <div id="cpuchart" style="width:200px;height:100px;"></div>
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
         <div class="row" style="padding:20px;">
             <div class="col-md-12">
                 <input type="button" id="test" class="btn btn-info" value="确定" />
@@ -19,7 +21,8 @@
     <script src="Scripts/bootstrap.min.js"></script>
     <script src="echarts/echarts.common.min.js"></script>
 
-    <script>   var option = null;
+    <script>
+        var option = null;
         option = {
             xAxis: {
                 type: 'category',
@@ -43,7 +46,6 @@
             }
         })
         $("#test").click(function () {
-
             $.ajax({
                 type: "GET",
                 url: "https://172.18.1.215:8243/FXYJ/v1/PUMPTRUCK",
