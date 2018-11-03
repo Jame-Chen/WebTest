@@ -209,9 +209,10 @@ jQuery.mSetValue = function (controlID, controltype, controlvalue) {
             $("#" + controlID + "").prop("value", controlvalue);
             break;
         case 'checkbox': //多选框  
-           var arr = controlvalue.split(",");
+            var arr = controlvalue.split(",");
             var obj = "input[name='" + controlID + "']";
-            $.each(arr, function (i,item) {
+            $(obj).prop("checked", false);
+            $.each(arr, function (i, item) {
                 obj += "[value='" + item + "'],";
             })
             obj = obj.substring(0, obj.length - 1);
