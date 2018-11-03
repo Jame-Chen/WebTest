@@ -200,7 +200,7 @@ jQuery.mSetValue = function (controlID, controltype, controlvalue) {
             //$("input[name='radio1'][value='上海']").attr("checked", true); //单选组radio：设置value='上海'的项目为当前选中项  
             //$("#select1").attr("value", '葡萄牙'); //下拉框select：设置value='中国'的项目为当前选中项  
             //$("input[name='checkbox1'][value='黑色'],[value='蓝色']").attr("checked", true); //多选框：设置多个值为当前选中项  
-            $("#" + controlID + "").attr("value", controlvalue); //填充内容  
+            $("#" + controlID + "").val(controlvalue); //填充内容  
             break;
         case 'radio': //单选框  
             $("input[name='" + controlID + "'][value='" + controlvalue + "']").prop("checked", true);
