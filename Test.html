@@ -4,12 +4,45 @@
     <title></title>
     <meta charset="utf-8">
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        select {
+            /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+            border: solid 1px #DDD;
+            /*很关键：将默认的select选择框样式清除*/
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            /*在选择框的最右侧中间显示小箭头图片*/
+            background: url("http://images.cnblogs.com/cnblogs_com/webqiand/636997/o_select.png") no-repeat scroll right center transparent;
+            /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+            padding-right: 20px;
+            padding-left: 5px;
+        }
+
+
+            /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+            select::-ms-expand {
+                display: none;
+            }
+    </style>
 </head>
 <body>
     <div id="cpuchart" style="width:200px;height:100px;"></div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12"></div>
+            <div class="col-md-12">
+                <select>
+                    <option value="0">测试</option>
+                    <option value="1">测试</option>
+                    <option value="2">测试</option>
+                    <option value="3">测试</option>
+                    <option value="4">测试</option>
+                    <option value="5">测试</option>
+                    <option value="6">测试</option>
+                    <option value="7">测试</option>
+                </select>
+
+            </div>
         </div>
         <div class="row" style="padding:20px;">
             <div class="col-md-12">
@@ -22,38 +55,19 @@
     <script src="echarts/echarts.common.min.js"></script>
 
     <script>
-        var option = null;
-        option = {
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                type: 'line',
-                areaStyle: {}
-            }]
-        };
         $(function () {
-            var dom = document.getElementById("cpuchart");
-            var myChart = echarts.init(dom);
-            if (option && typeof option === "object") {
-                myChart.setOption(option, true);
-            }
+         
         })
         $("#test").click(function () {
             $.ajax({
-                type: "GET",
-                url: "https://172.18.1.215:8243/FXYJ/v1/PUMPTRUCK",
-                dataType: "json",
+                type: "post",
+                url: "http://172.18.1.152:1001/odata/APP_CAROUSEL",
+                // dataType: "json",
                 headers: {
-                    "Authorization": "Bearer 3d6d59e0-0208-33b8-a63a-e4c23b633e8c",
+                    "Content-Type": "application/json",
                     "Accept": "application/json"
                 },
+                data: JSON.stringify({ "CDID": "121212" }),
                 success: function (data) {
                     alert(JSON.stringify(data));
                 },
@@ -69,127 +83,7 @@
             })
         })
 
-        function getstudent() {
-            $.ajax({
-                type: "get",
-                url: "https://172.18.1.75:8243/student/v1/Students",
-                dataType: "json",
-                headers: {
-                    "Authorization": "Bearer 183d014c-61c1-3657-9ab3-d7aff9431966",
-                    "Accept": "application/json"
-                },
-                success: function (data) {
-                    //  var ret = data.StudentCollection.Student[0];
-                    var arr = [];
-                    var list = {
-                        "_poststudent_batch_req": {
-                            "_poststudent": arr
-                        }
-                    }
-                    $.each(data.StudentCollection.Student, function (i, item) {
-                        var temp = {
-                            "Name": "" + item.Name + "",
-                            "Age": parseInt(item.Age),
-                            "Sex": parseInt(item.Sex),
-                            "Chinese": parseFloat(item.Chinese),
-                            "Math": parseFloat(item.Math),
-                            "English": parseFloat(item.English)
-                        }
-                        arr.push(temp);
-                    })
-                    addstudent(list);
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    if (xhr.status == 200) {
-
-                        alert(ajaxOptions);
-                    }
-                    else {
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
-                }
-            })
-        }
-
-        function addstudent(temp) {
-            temp = JSON.stringify(temp);//json字符串
-            alert(temp);
-            $.ajax({
-                type: "POST",
-                url: "https://172.18.1.75:8243/203student/v1/Student_batch_req",
-                dataType: "json",
-                data: temp,
-                headers: {
-                    "Content-Type": "application/json",//必须的
-                    "Authorization": "Bearer 183d014c-61c1-3657-9ab3-d7aff9431966",
-                    "Accept": "application/json"
-                },
-                success: function (data) {
-                    alert(JSON.stringify(data));
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    if (xhr.status == 200) {
-                        alert(ajaxOptions);
-                    }
-                    else {
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
-                }
-            })
-        }
-
-        function test() {
-            $.ajax({
-                type: "get",
-                url: "http://link.y11t.appnxt.com/v1/trigger/odoo",
-                dataType: "jsonp",
-                headers: {
-                    "Accept": "application/json"
-                },
-                data: {
-                    'link': 'c8b51d10ff3e11e7bf9e02420b6a1625',
-                    'action': 'article_list',
-                    'type': '公司新闻'
-                },
-                jsonp: "successCallback",
-                jsonpCallback: 'successCallback',
-                username: "",
-                password: "",
-                success: function (data) {
-                    alert(JSON.stringify(data));
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    if (xhr.status == 200) {
-
-                        alert(ajaxOptions);
-                    }
-                    else {
-                        alert(xhr.status);
-                        alert(thrownError);
-                    }
-                }
-            })
-        }
-
-        function successCallback(data) {
-            alert(JSON.stringify(data));
-        }
-
-        function domainTest() {
-            //document.domain;
-            var domain = "http://172.18.1.152:8091/YJDD/Index?mark=VXNlck5hbWU9QWRtaW58RGVwYXJ0bWVudD3luILmjpLmsLTlpIR8VXNlcklEPTEzMTEwNjE1MTYzNTYzODk2MjE1NjlkZjNlMjRlfERlcGFydG1lbnRUeXBlPeW4gueuoeWNleS9jXxUcnVlTmFtZT3ns7vnu5/nrqHnkIblkZg";
-            var paramIndex = domain.indexOf("?");
-            domain = domain.substring(7, paramIndex);
-            var index = domain.indexOf("/");
-            var index2 = domain.lastIndexOf("/");
-            if (index2 - index > 5) {
-                domain = domain.substring(index, index + 5);
-            } else {
-                domain = "";
-            }
-        }
+      
     </script>
 </body>
 
