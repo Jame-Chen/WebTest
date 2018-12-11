@@ -85,7 +85,7 @@
 
     <div id="app" class="container">
         <div>
-            <input type="text" placeholder="search" @input="search" list="cars" class="search"> 
+            <input type="text" placeholder="search" @input="search" list="cars" class="search">
             <datalist id="cars">
                 <option v-for="item in searchlist" value="item"></option>
             </datalist>
@@ -168,18 +168,18 @@
                             </div>\
                         </div>',
             computed: {
-                modifylist() {
-                return this.list;
-        }
-        },
-        methods: {
-            changeActive() {
-                this.$emit('change');
+                modifylist: function () {
+                    return this.list;
+                }
             },
-            modify() {
-                this.$emit('modify', this.modifylist);
+            methods: {
+                changeActive: function () {
+                    this.$emit('change');
+                },
+                modify: function () {
+                    this.$emit('modify', this.modifylist);
+                }
             }
-        }
         });
         var app = new Vue({
             el: '#app',
@@ -234,79 +234,79 @@
                     }
                 ]
             },
-            created() {
-                this.setSlist(this.list);
-        },
-        methods: {
-            // 修改数据
-            showOverlay(index) {
-                this.selected = index;
-                this.selectedlist = this.list[index];
-                this.changeOverlay();
-            },
-            // 点击保存按钮
-            modify(arr) {
-                if (this.selected > -1) {
-                    Vue.set(this.list, this.selected, arr);
-                    this.selected = -1;
-                } else {
-                    this.list.push(arr);
-                }
-                this.setSlist(this.list);
-                this.changeOverlay();
-            },
-            add: function () {
-                this.selectedlist = {
-                    username: '',
-                    email: '',
-                    sex: '男',
-                    province: '北京市',
-                    hobby: []
-                };
-                this.isActive = true;
-            },
-            // delete list in index location
-            del(index) {
-                this.list.splice(index, 1);
+            created: function () {
                 this.setSlist(this.list);
             },
-            changeOverlay() {
-                this.isActive = !this.isActive;
-            },
-            // 获取需要渲染到页面中的数据
-            setSlist(arr) {
-                this.slist = JSON.parse(JSON.stringify(arr));
-            },
-            // 搜索
-            search(e) {
-                var v = e.target.value,
-                    self = this;
-                self.searchlist = [];
-                if (v) {
-                    var ss = [];
-                    // 过滤需要的数据
-                    this.list.forEach(function (item) {
-                        if (item.username.indexOf(v) > -1) {
-                            if (self.searchlist.indexOf(item.username) == -1) {
-                                self.searchlist.push(item.username);
-                            }
-                            ss.push(item);
-                        } else if (item.email.indexOf(v) > -1) {
-                            if (self.searchlist.indexOf(item.email) == -1) {
-                                self.searchlist.push(item.email);
-                            }
-                            ss.push(item);
-                        }
-                    });
-                    this.setSlist(ss); // 将过滤后的数据给了slist
-                } else {
-                    // 没有搜索内容，则展示全部数据
+            methods: {
+                // 修改数据
+                showOverlay: function (index) {
+                    this.selected = index;
+                    this.selectedlist = this.list[index];
+                    this.changeOverlay();
+                },
+                // 点击保存按钮
+                modify: function (arr) {
+                    if (this.selected > -1) {
+                        Vue.set(this.list, this.selected, arr);
+                        this.selected = -1;
+                    } else {
+                        this.list.push(arr);
+                    }
                     this.setSlist(this.list);
+                    this.changeOverlay();
+                },
+                add: function () {
+                    this.selectedlist = {
+                        username: '',
+                        email: '',
+                        sex: '男',
+                        province: '北京市',
+                        hobby: []
+                    };
+                    this.isActive = true;
+                },
+                // delete list in index location
+                del: function (index) {
+                    this.list.splice(index, 1);
+                    this.setSlist(this.list);
+                },
+                changeOverlay: function () {
+                    this.isActive = !this.isActive;
+                },
+                // 获取需要渲染到页面中的数据
+                setSlist: function (arr) {
+                    this.slist = JSON.parse(JSON.stringify(arr));
+                },
+                // 搜索
+                search: function (e) {
+                    var v = e.target.value,
+                        self = this;
+                    self.searchlist = [];
+                    if (v) {
+                        var ss = [];
+                        // 过滤需要的数据
+                        this.list.forEach(function (item) {
+                            if (item.username.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.username) == -1) {
+                                    self.searchlist.push(item.username);
+                                }
+                                ss.push(item);
+                            } else if (item.email.indexOf(v) > -1) {
+                                if (self.searchlist.indexOf(item.email) == -1) {
+                                    self.searchlist.push(item.email);
+                                }
+                                ss.push(item);
+                            }
+                        });
+                        this.setSlist(ss); // 将过滤后的数据给了slist
+                    } else {
+                        // 没有搜索内容，则展示全部数据
+                        this.setSlist(this.list);
+                    }
                 }
+            },
+            watch: {
             }
-        },
-        watch: {
-        }
         })
     </script>
 
